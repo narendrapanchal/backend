@@ -12,8 +12,24 @@ const crudCart=require("./controller/cart.controller");
 const crudOrder=require("./controller/order.controller");
 const dotenv = require('dotenv');
 dotenv.config();
+
 app.use("/create",createUser);
-app.use("/users",crudUser);
+app.use("/users",(req, res, next) => {
+    // Allow any origin
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  
+    // Allow specific HTTP methods
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  
+    // Allow specific HTTP headers
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+    // Allow credentials (if applicable)
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+    // Continue to the next middleware or route handler
+    next();
+  },crudUser);
 app.use("/inventory",crudInventory);
 app.use("/cart",crudCart);
 app.use("/order",crudOrder);
