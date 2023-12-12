@@ -72,7 +72,7 @@ router.post("", async (req, res) => {
       if (err) return res.status(403).json({ message: 'Forbidden' });
       
       const users = await User.findById(user._id).lean().exec();
-      return res.send({rile:users[0].role});
+      return res.send({role:users[0].role});
   });
     
   } catch (e) {
