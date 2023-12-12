@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt=require("jsonwebtoken");
 const router = express.Router();
 const {User} = require("../model/user.model");
 const bcrypt = require("bcrypt");
@@ -66,8 +67,14 @@ router.post("/login", async (req, res) => {
 });
 router.get("", async (req, res) => {
   try {
-    const users = await User.find().lean().exec();
-    return res.send(users);
+    const token = req.header('Authorization');
+    jwt.verify(token.split(" ")[1], secret,async (err, user) => {
+      if (err) return res.status(403).json({ message: 'Forbidden' });
+      
+      const users = await User.findById(user._id).lean().exec();
+      return res.send({rile:users[0].role});
+  });
+    
   } catch (e) {
     return res.status(500).json({ message: e.message, status: "Failed" });
   }
