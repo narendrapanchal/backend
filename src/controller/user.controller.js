@@ -65,7 +65,7 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-router.get("", async (req, res) => {
+router.post("", async (req, res) => {
   try {
     const token = req.header('Authorization');
     jwt.verify(token.split(" ")[1], secret,async (err, user) => {
