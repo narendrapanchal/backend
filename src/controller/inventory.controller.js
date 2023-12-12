@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {Inventory} = require("../model/inventory.model");
 const authenticateRole=require("../authenticate.js");
-router.get("",authenticateRole("Customer"), async (req, res) => {
+router.post("/all-inventories",authenticateRole("Customer"), async (req, res) => {
   try {
     const inventories = await Inventory.find({ quantity: { $gt: 0 } }).lean().exec();
     return res.send(inventories);
