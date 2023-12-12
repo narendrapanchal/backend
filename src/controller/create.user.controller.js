@@ -32,7 +32,7 @@ router.post("/register", async (req, res) => {
     // Save the user to the database
     await newUser.save();
 
-    res.json({ message: "User registered successfully" });
+    return res.json({ message: "User registered successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -56,7 +56,7 @@ router.post("/login", async (req, res) => {
         secret,
         { expiresIn: "30d" }
       );
-      res.json({ token });
+     return res.json({ token,role:user.role });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
     }
