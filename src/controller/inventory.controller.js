@@ -10,6 +10,14 @@ router.post("/all-inventories",authenticateRole("Customer"), async (req, res) =>
     return res.status(500).json({ message: e.message, status: "Failed" });
   }
 });
+router.post("/all-inventories-list",authenticateRole("Manager"), async (req, res) => {
+  try {
+    const inventories = await Inventory.find().lean().exec();
+    return res.send(inventories);
+  } catch (e) {
+    return res.status(500).json({ message: e.message, status: "Failed" });
+  }
+});
 
 router.post('/add-product',authenticateRole("Manager"), async (req, res) => {
   try {

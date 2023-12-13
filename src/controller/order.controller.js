@@ -110,7 +110,7 @@ router.put('/update-order-status/:orderId', authenticateRole("Manager"), async (
     }
 });
 
-router.post('/orders/:userId',authenticateRole("Customer"), async (req, res) => {
+router.post('/orders/',authenticateRole("Customer"), async (req, res) => {
     try {
       const userId = req.user.userId;
 
