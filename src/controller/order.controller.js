@@ -75,7 +75,7 @@ router.post("/place-order", authenticateRole("Customer"), async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-router.get("/all-orders", authenticateRole("Manager"),async (req, res) => {
+router.post("/all-orders", authenticateRole("Manager"),async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("items.productId");
@@ -112,7 +112,7 @@ router.put('/update-order-status/:orderId', authenticateRole("Manager"), async (
 
 router.post('/orders/:userId',authenticateRole("Customer"), async (req, res) => {
     try {
-        const userId = req.params.userId;
+      const userId = req.user.userId;
 
         const orders = await Order.find({ userId }).populate('items.productId');
 
