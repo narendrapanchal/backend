@@ -18,6 +18,15 @@ router.post("/all-inventories-list",authenticateRole("Manager"), async (req, res
     return res.status(500).json({ message: e.message, status: "Failed" });
   }
 });
+router.post("/all-inventories-list/:productId",authenticateRole("Manager"), async (req, res) => {
+  try {
+    const _id = req.params.productId;
+    const inventories = await Inventory.findById(_id).lean().exec();
+    return res.send(inventories);
+  } catch (e) {
+    return res.status(500).json({ message: e.message, status: "Failed" });
+  }
+});
 
 router.post('/add-product',authenticateRole("Manager"), async (req, res) => {
   try {
@@ -41,14 +50,13 @@ router.post('/add-product',authenticateRole("Manager"), async (req, res) => {
   }
 });
 
-router.put('/update-product-quantity/:productId',authenticateRole("Manager"), async (req, res) => {
+router.patch('/update-product/:productId',authenticateRole("Manager"), async (req, res) => {
   try {
       const productId = req.params.productId;
-      const { quantity } = req.body;
 
       const product = await Inventory.findByIdAndUpdate(
           productId,
-          { $inc: { quantity: quantity } },
+          req.body,
           { new: true }
       );
 
@@ -57,21 +65,6 @@ router.put('/update-product-quantity/:productId',authenticateRole("Manager"), as
       }
 
       res.json({ message: 'Product quantity updated successfully', product });
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
-
-router.delete('/delete-products', async (req, res) => {
-  try {
-      const deletedProducts = await Inventory.deleteMany({ quantity: 0 });
-
-      if (deletedProducts.deletedCount === 0) {
-          return res.status(404).json({ message: 'No products found with quantity 0 in the inventory' });
-      }
-
-      res.json({ message: 'Products deleted successfully', deletedCount: deletedProducts.deletedCount });
   } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
