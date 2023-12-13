@@ -50,13 +50,15 @@ router.put("/update-cart/:productId",authenticate("Customer"), async (req, res) 
     const quantity = req.body.quantity;
     const user = await User.findById(userId).populate("cart.productId");
     if (!user) {
+      console.log("use")
         return res.status(404).json({ message: 'User not found' });
     }
 
     const cartItem = user.cart.find(item => item._id == productId);
 
     if (!cartItem) {
-        return res.status(404).json({ message: 'Item not found in the cart' });
+      console.log("cartItem")
+      return res.status(404).json({ message: 'Item not found in the cart' });
       }
       if(cartItem.productId.quantity<quantity){
         return res.status(422).json({ message: 'Insufficient quantity in the inventory' });

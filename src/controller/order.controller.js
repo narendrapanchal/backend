@@ -11,9 +11,11 @@ router.post("/place-order", authenticateRole("Customer"), async (req, res) => {
 
     const user = await User.findById(userId).populate("cart.productId");
     if (!user) {
+      console.log("user")
       return res.status(404).json({ message: "User not found" });
     }
     if (user.cart.length < 1) {
+      console.log("csrtL:eangth")
       return res.status(404).json({ message: "No product found" });
     }
     let mapInventory = {};
@@ -108,7 +110,7 @@ router.put('/update-order-status/:orderId', authenticateRole("Manager"), async (
     }
 });
 
-router.get('/orders/:userId',authenticateRole("Customer"), async (req, res) => {
+router.post('/orders/:userId',authenticateRole("Customer"), async (req, res) => {
     try {
         const userId = req.params.userId;
 
