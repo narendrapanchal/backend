@@ -49,6 +49,7 @@ router.post("/login", async (req, res) => {
     });
 
     // Check if the user exists and the password is correct
+    console.log(username,password)
     if (user && (await bcrypt.compare(password, user.password))) {
       // Generate JWT token
       const token = jwt.sign(
