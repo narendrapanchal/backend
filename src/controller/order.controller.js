@@ -10,16 +10,13 @@ router.post("/place-order", authenticateRole("Customer"), async (req, res) => {
 
     const user = await User.findById(userId).populate("cart.productId");
     if (!user) {
-      console.log("user")
       return res.status(404).json({ message: "User not found" });
     }
     if (user.cart.length < 1) {
-      console.log("csrtL:eangth")
       return res.status(404).json({ message: "No product found" });
     }
     let mapInventory = {};
     {
-        //checking if placing order with more quantity than the available quantity
 
       user.cart.forEach((ele) => {
         if (mapInventory[ele.productId._id] == null) {
@@ -60,11 +57,9 @@ router.post("/place-order", authenticateRole("Customer"), async (req, res) => {
         await inventory.save();
       
     });
-    // Save the order to the database;
 
     await order.save();
 
-    // Clear the user's cart
     user.cart = [];
     await user.save();
 
@@ -89,20 +84,14 @@ router.put('/update-order-status/:orderId', authenticateRole("Manager"), async (
     try {
         const orderId = req.params.orderId;
         const { status } = req.body;
-
         const order = await Order.findByIdAndUpdate(
             orderId,
             { $push: { status: status } },
             { new: true }
         );
-
         if (!order) {
-          console.log("Asda")
             return res.status(404).json({ message: 'Order not found' });
         }
-
-        // In a real-world application, you might want to send a notification to the customer
-
         res.json({ message: 'Order status updated successfully', order });
     } catch (error) {
         console.error(error);
