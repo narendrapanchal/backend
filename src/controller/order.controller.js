@@ -97,6 +97,7 @@ router.put('/update-order-status/:orderId', authenticateRole("Manager"), async (
         );
 
         if (!order) {
+          console.log("Asda")
             return res.status(404).json({ message: 'Order not found' });
         }
 
@@ -113,7 +114,7 @@ router.post('/orders/',authenticateRole("Customer"), async (req, res) => {
     try {
       const userId = req.user.userId;
 
-        const orders = await Order.find({ userId }).populate('items.productId');
+        const orders = await Order.find({ userId }).populate('items.productId').sort({orderDate:-1});
 
         if (!orders || orders.length === 0) {
             return res.status(404).json({ message: 'No orders found for the specified user' });
