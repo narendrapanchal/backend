@@ -8,7 +8,7 @@ const userSchema=new Schema({
     phone: { type: String, unique: true },
     address: String,
     password: String,
-    role: { type: String, enum: ["Customer", "Manager","Admin"],default:"Customer" },
+    role: { type: String, enum: ["Customer", "Manager","Admin"], default:"Customer" },
     cart:[cartSchema]
 },{
     versionKey:false,
