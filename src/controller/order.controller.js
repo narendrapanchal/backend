@@ -4,7 +4,6 @@ const { User } = require("../model/user.model");
 const { Order } = require("../model/order.model");
 const { Inventory } = require("../model/inventory.model");
 const authenticateRole = require("../authenticate");
-const mongoose = require("mongoose");
 router.post("/place-order", authenticateRole("Customer"), async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -77,7 +76,7 @@ router.post("/place-order", authenticateRole("Customer"), async (req, res) => {
 });
 router.post("/all-orders", authenticateRole("Manager"),async (req, res) => {
   try {
-    const orders = await Order.find()
+    const orders = await Order.find().sort({orderDate:-1})
       .populate("items.productId");
     res.json({ orders });
   } catch (error) {

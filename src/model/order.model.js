@@ -7,7 +7,6 @@ const orderSchema = new mongoose.Schema({
     }],
     orderDate: { type: Date, default: Date.now },
     status: {type:[{type:String}],default: ['Processing']},
-    src:String
 });
 
 module.exports={Order:mongoose.model('order', orderSchema),orderSchema};

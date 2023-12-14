@@ -53,7 +53,7 @@ router.post('/add-product',authenticateRole("Manager"), async (req, res) => {
 router.patch('/update-product/:productId',authenticateRole("Manager"), async (req, res) => {
   try {
       const productId = req.params.productId;
-
+      console.log("productId",productId)
       const product = await Inventory.findByIdAndUpdate(
           productId,
           req.body,
